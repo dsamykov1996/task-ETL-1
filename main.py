@@ -155,12 +155,59 @@ df["full_name"] = df.first_name + df.last_name
 
 df["email_domain"] = df["email"].str.split("@").str[-1]
 
+df["city_lenght"] = df["city"].apply(len)
+
+df["is_gmail"] = [True if "@gmail.com" in str(s).lower() else False for s in df["email"]]
+
+# print([bool(s) for s in df["email"] if "@gmail.com" in str(s).lower()])
+
+#4 Filtring datas
+
+print("\n--- підвибірки ---")
+
+gmail_users = df.loc[df["is_gmail"] == True].copy()
+print(gmail_users)
+
+print("Gmail users:", len(gmail_users))
+
+# workers companies of "LLC" or "LTD"
+
+# df["company_name"]
+df["company_name"] = df["company_name"].fillna("")
+
+mask_LLC_Ltd = df.company_name.str.contains(r"\b(LLC|Ltd|llc|LTD|ltd)\b", regex=True, na=False)
+# print(mask_LLC_Ltd)
+
+company_llc_ltd = df.loc[mask_LLC_Ltd].copy()
+# print(company_llc_ltd)
+
+print("Company LLC and Ltd:", len(company_llc_ltd))
+
+#5 позиційна вибірка
+
+try:
+    first_10_cols_2_5 = df.iloc[:10, 2:6]
+    print("\nFirst 10 cols and 2-5 str")
+    print(first_10_cols_2_5)
+except Exception as e:
+    print("can't first 10 str + colmns 2-5:", e)
+
+
+
+every_10th = df.iloc[::10, :].copy()
+print("\nevery_10th")
+print(every_10th)    
+
+random_5th = df.sample(5, random_state=42)
+print("\nrandom_5th_row")
+print(random_5th)
+
+#6. Grouping and statistic
 
 
 
 
-
-print(df.head())    
+# print(df.head())    
 
 
 
