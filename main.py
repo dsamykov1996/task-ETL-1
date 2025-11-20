@@ -149,6 +149,13 @@ else:
     print("n\--- haven't name ---")        
 
 
+#3. Creating new columns (Feature Engineering)
+
+df["full_name"] = df.first_name + df.last_name
+
+df["email_domain"] = df["email"].str.split("@").str[-1]
+
+
 
 
 
