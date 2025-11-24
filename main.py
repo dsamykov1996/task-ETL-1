@@ -204,6 +204,54 @@ print(random_5th)
 
 #6. Grouping and statistic
 
+city_group_stat = df.groupby("city").agg(
+    people=("full_name", "count"),
+    unique_domain=("email_domain", "nunique")
+)
+
+print("\nQuantity of people in each city and unique domains:")
+print(city_group_stat.sort_values(by="people", ascending=False).head(20))
+
+top5_city = df["city"].value_counts().head(5)
+print("\nTop 5 cities")
+print(top5_city)
+
+domain_top5 = df["email_domain"].value_counts().head(5)
+print("\nTop 5 domains")
+print(domain_top5)
+
+print("\nUnique domains:")
+unique_domain = df["email_domain"].nunique()
+print(unique_domain)
+
+#7 Export results
+
+df.to_csv("uk500_clean.csv", index=False)
+print("File uk500_clean.csv is SAVED")
+
+# gmail_users = df.loc[df["is_gmail"]==True].copy()  FROM THIS
+
+gmail_users.to_csv("gmail_users.csv", index=False)
+print("File gmail_users.csv is SAVED")
+
+top5_city_df = top5_city.reset_index()
+top5_city_df.columns = ["city", "count"]
+
+top5_domains_df = domain_top5.reset_index()
+top5_domains_df.columns = ["city", "count"]
+
+with pd.ExcelWriter("stats.xlsx") as writer:
+    top5_domains_df.to_excel(writer, sheet_name="top_domains", index=False)
+    top5_city_df.to_excel(writer, sheet_name="top_cities", index=False)
+
+print("File stats.xlsx is SAVED")    
+
+
+
+
+
+
+
 
 
 
